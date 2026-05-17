@@ -1,0 +1,49 @@
+{
+  "rootNodes": ["artboard_01"],
+  "nodes": {
+    "artboard_01": {
+      "id": "artboard_01",
+      "type": "artboard",
+      "name": "Instagram Post Canvas",
+      "width": 1080,
+      "height": 1080,
+      "children": ["node_bg", "node_product", "node_headline", "node_badge"],
+      "data": { "backgroundColor": "#1e1b4b" }
+    },
+    "node_bg": {
+      "id": "node_bg",
+      "type": "shape",
+      "name": "Background.png",
+      "x": 0, "y": 0, "width": 1080, "height": 1080,
+      "nx": 0.0, "ny": 0.0, "nw": 1.0, "nh": 1.0,
+      "style": { "fill": "#111827", "visual": {} }
+    },
+    "node_product": {
+      "id": "node_product",
+      "type": "image",
+      "name": "Product.png",
+      "x": 290, "y": 340, "width": 500, "height": 500,
+      "nx": 0.268, "ny": 0.314, "nw": 0.463, "nh": 0.463,
+      "data": { "content": "👟 Premium Running Shoes" },
+      "style": { "fill": "#374151" }
+    },
+    "node_headline": {
+      "id": "node_headline",
+      "type": "text",
+      "name": "headline",
+      "x": 140, "y": 120, "width": 800, "height": 100,
+      "nx": 0.129, "ny": 0.111, "nw": 0.74, "nh": 0.092,
+      "data": { "content": "Luxury Comfort, Surprisingly Attainable" },
+      "style": { "color": "#ffffff", "visual": { "fontSize": 42 } }
+    },
+    "node_badge": {
+      "id": "node_badge",
+      "type": "shape",
+      "name": "discount badge",
+      "x": 800, "y": 280, "width": 160, "height": 160,
+      "nx": 0.74, "ny": 0.259, "nw": 0.148, "nh": 0.148,
+      "data": { "content": "20% OFF" },
+      "style": { "fill": "#ef4444", "visual": { "fontSize": 18 } }
+    }
+  }
+}
