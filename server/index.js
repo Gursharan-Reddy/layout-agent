@@ -5,17 +5,18 @@ import { callLLM } from './services/llmService.js';
 import { buildSystemPrompt } from './prompts/systemPrompt.js';
 import { validateLayout } from './utils/jsonValidator.js';
 
+// Load environment variables immediately
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configures global permissive cross-origin access for smooth production syncs
+// Global cross-origin configuration to allow communication with your Vercel frontend
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// Routes directly to /chat to match the updated client endpoint definition
-app.post('/chat', async (req, res) => {
+// Core execution handler shared across endpoint routes
+const handleChatRequest = async (req, res) => {
   try {
     const { message, layout, history } = req.body;
 
@@ -23,8 +24,13 @@ app.post('/chat', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Missing mandatory payload: message or layout state' });
     }
 
+    // Validate the wireframe object schema structure
     validateLayout(layout);
+    
+    // Inject current canvas coordinates into the design rules
     const systemPrompt = buildSystemPrompt(layout);
+    
+    // Process layout adjustments using Groq Llama-3.3
     const aiResponse = await callLLM(systemPrompt, history || [], message);
 
     return res.json({
@@ -40,7 +46,11 @@ app.post('/chat', async (req, res) => {
       error: `Internal Processing Failure: ${error.message}` 
     });
   }
-});
+};
+
+// Bind the handler to BOTH possible endpoints to intercept any structural URL mismatch
+app.post('/chat', handleChatRequest);
+app.post('/api/chat', handleChatRequest);
 
 app.listen(PORT, () => {
   console.log(`Server executing safely on interface port ${PORT}.`);
