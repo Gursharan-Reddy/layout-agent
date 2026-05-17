@@ -5,17 +5,17 @@ import { callLLM } from './services/llmService.js';
 import { buildSystemPrompt } from './prompts/systemPrompt.js';
 import { validateLayout } from './utils/jsonValidator.js';
 
-// Load the environment configuration instantly before calling services
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Handle cross-origin requests from Vite (port 5173) and parse JSON objects
-app.use(cors({ origin: 'http://localhost:5173' }));
+// Configures global permissive cross-origin access for smooth production syncs
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-app.post('/api/chat', async (req, res) => {
+// Routes directly to /chat to match the updated client endpoint definition
+app.post('/chat', async (req, res) => {
   try {
     const { message, layout, history } = req.body;
 
@@ -23,13 +23,8 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Missing mandatory payload: message or layout state' });
     }
 
-    // Guardrail validation check on layout state structure
     validateLayout(layout);
-
-    // Build the dynamic prompt matrix with the layout injected
     const systemPrompt = buildSystemPrompt(layout);
-
-    // Forward the context payload downstream to the Groq Engine
     const aiResponse = await callLLM(systemPrompt, history || [], message);
 
     return res.json({

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// Fallback dynamically handles both local sandbox testing and production deployment
-const SEED_URL = import.meta.env.VITE_API_URL || "https://layout-agent-backend-zvfk.onrender.com/api";
+// Removed the trailing /api since the backend routes directly to /chat
+const SEED_URL = import.meta.env.VITE_API_URL || "https://layout-agent-backend-zvfk.onrender.com";
 
 const API_CLIENT = axios.create({
   baseURL: SEED_URL,
